@@ -80,7 +80,7 @@ async def light_handle(request):
       'All': all
     },
     'Property': {
-      'CameraID': metadata['id']
+      'CameraID': metadata['cameraID']
     },
     'Result': json.dumps({
       'regions': result_annotations
