@@ -10,19 +10,19 @@ Runtime
 POST
 
 **Headers**
-- **Content-Type: ** multipart/form-data
-- **AGENT-ID: ** *AGENT_ID*
+- Content-Type: multipart/form-data
+- AGENT-ID: *AGENT_ID*
 
 **Request Body**
-- **images[i]: ** *File {image binary}*
-- **data: ** *File {JSON data}*
+- images[i]: *File {image binary}*
+- data: *File {JSON data}*
 
 #### Response
 **Status**
 200
 
 **Headers**
-- **Content-Type: ** application/json
+- Content-Type: application/json
 
 **Response Body**
 ```
@@ -44,10 +44,10 @@ POST
 *array of arguments*
 
 **Environment variable**
-- **AGENT_ID: ** *AGENT_ID*
-- **DATA: ** *JSON String*
-- **IMAGE_PATH: ** *comma separated image full path*
-- **STREAM_URL: ** *accessible stream URL*
+- AGENT_ID: *AGENT_ID*
+- DATA: *JSON String*
+- IMAGE_PATH: *comma separated image full path*
+- STREAM_URL: *accessible stream URL*
 
 **Standard output**
 *One line per record: JSON String*
@@ -60,16 +60,16 @@ Example
 POST
 
 **Headers**
-- **Content-Type: ** multipart/form-data
-- **AGENT-ID: ** 111
+- Content-Type: multipart/form-data
+- AGENT-ID: 111
 
 **Request Body**
-- **images[0]: **
+- images[0]:
 ```
 filename: /nectec-camera-snapshot.s3.meca.in.th/NECTEC-CAM-6/6B0201EPAG7F42D/2022-09-28/001/jpg/09/52/15[R][0@0][0].jpg
 body: image binary
 ```
-- **data: **
+- data:
 ```
 filename: data.json
 body: {
@@ -97,14 +97,14 @@ body: {
 200
 
 **Headers**
-- **Content-Type: ** application/json
+- Content-Type: application/json
 
 **Response Body**
 ```json
 {
-  "Field": { "Off": 2, "All": 2 },
-  "Property": { "CameraID": "6B0201EPAG7F42D" },
-  "Result": "{\"regions\": [{\"id\": \"#f4683761-ed9d-4fed-bad6-a9e0ae5c175c\", \"shape\": \"rect\", \"x\": 276, \"y\": 188, \"w\": 78, \"h\": 97, \"result\": \"off\"}, {\"id\": \"#44068ba9-b9eb-48da-a488-ab5f2e1585a7\", \"shape\": \"rect\", \"x\": 1113, \"y\": 83, \"w\": 32, \"h\": 58, \"result\": \"off\"}]}"
+ "Field": { "Off": 2, "All": 2 },
+ "Property": { "CameraID": "6B0201EPAG7F42D" },
+ "Result": "{\"regions\": [{\"id\": \"#f4683761-ed9d-4fed-bad6-a9e0ae5c175c\", \"shape\": \"rect\", \"x\": 276, \"y\": 188, \"w\": 78, \"h\": 97, \"result\": \"off\"}, {\"id\": \"#44068ba9-b9eb-48da-a488-ab5f2e1585a7\", \"shape\": \"rect\", \"x\": 1113, \"y\": 83, \"w\": 32, \"h\": 58, \"result\": \"off\"}]}"
 }
 ```
 ### Linux process
@@ -115,8 +115,8 @@ body: {
 `["/home/ridnarong/workspaces/detect-people/light.py"]`
 
 **Environment variable**
-- **AGENT_ID: ** 111
-- **DATA: ** 
+- AGENT_ID: 111
+- DATA: 
 ```json
 {
   "media": "images",
@@ -137,7 +137,7 @@ body: {
   ]
 }
 ```
-- **IMAGE_PATH: ** `/tmp/people-counting-process-demo/1663602956772.172.16.2.50_01_20220919225021474_TIMING.jpg`
+- IMAGE_PATH: `/tmp/people-counting-process-demo/1663602956772.172.16.2.50_01_20220919225021474_TIMING.jpg`
 
 **Standard output**
 `{"Field": { "Off": 2, "All": 2 }, "Property": { "CameraID": "6B0201EPAG7F42D" }, "Result": "{\"regions\": [{\"id\": \"#f4683761-ed9d-4fed-bad6-a9e0ae5c175c\", \"shape\": \"rect\", \"x\": 276, \"y\": 188, \"w\": 78, \"h\": 97, \"result\": \"off\"}, {\"id\": \"#44068ba9-b9eb-48da-a488-ab5f2e1585a7\", \"shape\": \"rect\", \"x\": 1113, \"y\": 83, \"w\": 32, \"h\": 58, \"result\": \"off\"}]}"}`
@@ -156,7 +156,7 @@ $ . .venv/bin/activate
 
 Install dependency
 ```bash
-$ . .venv/bin/activate
+$ pip install -r requirements.txt
 ```
 Start HTTP Service
 ```bash
@@ -165,12 +165,12 @@ $ python server.py
 
 Process Image using HTTP Request
 ```bash
-$ curl -F images[0]=@foo-202209121239.jpeg -F data=@data.json localhost:8080/light
+$ curl -F images[0]=@foo-202209121239.jpeg -F data=@data.json -H AGENT_ID=111 localhost:8080/light
 ```
 
 Process Image using Python
 ```bash
-$ export DATA=$(cat data.json); export IMAGE_PATH="${PWD}/foo-202209121239.jpeg"; python light.py
+$ export AGENT_ID=111; export DATA=$(cat data.json); export IMAGE_PATH="${PWD}/foo-202209121239.jpeg"; python light.py
 ```
 
 Process Stream using Python
